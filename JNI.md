@@ -233,7 +233,8 @@
     exception before making other JNI calls. 
     When there is a pending exception, the JNI functions that are safe to call are
 
-      ```ExceptionOccurred()
+      ```
+      ExceptionOccurred()
       ExceptionDescribe()
       ExceptionClear()
       ExceptionCheck()
@@ -269,18 +270,15 @@
 
 Table 2-1 Unicode Character Translation
 
-| Escape sequence   | Denotes                   |
-| ----------------- | ------------------------- |
-| `_0XXXX`          | the character "`_`""      |
-| `_1`              | the character "`;`"       |
-| `_2`              | the character "["         |
-| `_3`              | a Unicode character XXXX. |
-|                   | Note that lower case is   |
-|                   | used to represent non-ASCII |
-|                   | Unicode characters,       |
-|                   | e.g., `_0abcd` as opposed |
-|                   | to `_0ABCD`.              |
-
+| Escape sequence   | Denotes                                   |
+| ----------------- | ----------------------------------------- |
+| `_1`              | the character "`_`""                      |
+| `_2`              | the character "`;`"                       |
+| `_3`              | the character "["                         |
+| `_0XXXX`          | a Unicode character XXXX.                 |
+|                   | Note that lower case is used to represent |
+|                   | non-ASCII Unicode characters, e.g.,       |
+|                   | `_0abcd` as opposed to `_0ABCD`.          |
 
 Table 3-1 Primitive Types and Native Equivalents
 
