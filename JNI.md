@@ -11,7 +11,9 @@
     typedef struct _jmethodID *jmethodID;   // method IDs
     ```
 
-2.  In C, all other JNI reference types are defined to be the same as jobject. 
+2.  ![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
+3.  
+4.  In C, all other JNI reference types are defined to be the same as jobject. 
     For example:
 
     ```
@@ -303,7 +305,7 @@ For example, the Java method:
 has the following type signature:
 `(ILjava/lang/String;[I)J `
 
-![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
+
 
 | Type Signature            | Java Type             |
 | -----------------         | --------------------- |
