@@ -267,12 +267,17 @@
 
 Table 2-1 Unicode Character Translation
 
-| Escape sequence   | Denotes               |
-| ----------------- | --------------------- |
-| `_0XXXX`          | the character "`_`""  |
-| `_1`              | the character "`;`"   |
-| `_2`              | the character "["     |
-| `_3`              | a Unicode character XXXX. Note that lower case is used to represent non-ASCII Unicode characters, e.g., `_0abcd` as opposed to `_0ABCD`. |
+| Escape sequence   | Denotes                   |
+| ----------------- | ------------------------- |
+| `_0XXXX`          | the character "`_`""      |
+| `_1`              | the character "`;`"       |
+| `_2`              | the character "["         |
+| `_3`              | a Unicode character XXXX. |
+|                   | Note that lower case is   |
+|                   | used to represent non-ASCII |
+|                   | Unicode characters,       |
+|                   | e.g., `_0abcd` as opposed |
+|                   | to `_0ABCD`.              |
 
 
 Table 3-1 Primitive Types and Native Equivalents
@@ -298,7 +303,7 @@ For example, the Java method:
 has the following type signature:
 `(ILjava/lang/String;[I)J `
 
-![alt text](Session1.png)
+![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
 
 | Type Signature            | Java Type             |
 | -----------------         | --------------------- |
