@@ -10,7 +10,6 @@
     ```
     typedef jobject jclass;
     ```
-
     In C++, JNI introduces a set of dummy classes to enforce the subtyping relationship. For example:
 
     ```
@@ -268,8 +267,23 @@
     #define JNI_FALSE  0
     #define JNI_TRUE   1
     ```
-2. 
+2.  The Java method:
+   
+    ```
+    long f (int n, String s, int[] arr); 
+    ```
+    has the following type signature:
+    
+    ```
+    (ILjava/lang/String;[I)J 
+    ```
+3.  
 
+
+
+
+
+## Tables
 
 Table 2-1 Unicode Character Translation
 
@@ -282,6 +296,8 @@ Table 2-1 Unicode Character Translation
 |                   | Note that lower case is used to represent |
 |                   | non-ASCII Unicode characters, e.g.,       |
 |                   | `_0abcd` as opposed to `_0ABCD`.          |
+
+-----------------------------------------------------------------
 
 Table 3-1 Primitive Types and Native Equivalents
 
@@ -297,16 +313,9 @@ Table 3-1 Primitive Types and Native Equivalents
 | `double`          | `jdouble`             | 64 bits           |
 | `void`            | `void`                | N/A               |
 
-
+-----------------------------------------------------------------
 
 Table 3-2 Java VM Type Signatures
-
-For example, the Java method:
-`long f (int n, String s, int[] arr); `
-has the following type signature:
-`(ILjava/lang/String;[I)J `
-
-
 
 | Type Signature            | Java Type             |
 | -----------------         | --------------------- |
@@ -322,6 +331,7 @@ has the following type signature:
 | [ type                    | type[]                |
 | ( arg-types ) ret-type    | method type           |
 
+-----------------------------------------------------------------
 
 
 
