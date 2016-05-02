@@ -1,5 +1,38 @@
 # Collection of JNI knowledge
 
+## General, compiling, and linking
+1.  The JNI interface is organized like a C++ virtual function table or a COM interface. 
+    An interface pointer is a pointer to a pointer. 
+    This pointer points to an array of pointers, each of which points to an interface function. 
+    Every interface function is at a predefined offset inside the array. 
+    The following figure illustrates the organization of an interface pointer.
+    ![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/designa.gif)
+2.  The JNI interface pointer is only valid in the current thread. 
+    A native method, therefore, must not pass the interface pointer from one thread to another. 
+    A VM implementing the JNI may allocate and store thread-local data in the area pointed to 
+     by the JNI interface pointer.
+    The VM is guaranteed to pass the same interface pointer to a native method when it makes 
+     multiple calls to the native method from the same Java thread. 
+    However, a native method can be called from different Java threads, and therefore may 
+     receive different JNI interface pointers.
+3.  Since the Java VM is multithreaded, native libraries should also be compiled 
+     and linked with multithread aware native compilers.
+    For code complied with the GNU `gcc` compiler, the flags `-D_REENTRANT` or 
+     `-D_POSIX_C_SOURCE` should be used. 
+    For more information please refer to the native compiler documentation.
+4.  The system (as in `System.loadLibrary()`) follows a standard, but platform-specific, 
+     approach to convert the library name to a native library name. 
+    For example, a Solaris system converts the name `pkg_Cls` to `libpkg_Cls.so`, 
+     while a Win32 system converts the same `pkg_Cls` name to `pkg_Cls.dll`.
+5.  The programmer can also call the JNI function `RegisterNatives()` to register 
+     the native methods associated with a class. 
+    The `RegisterNatives()` function is particularly useful with statically 
+    linked functions.
+
+
+
+
+
 ## Type information
 1.  JNI reference types are organized in the hierarchy shown below
    ![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
@@ -10,7 +43,8 @@
     ```
     typedef jobject jclass;
     ```
-    In C++, JNI introduces a set of dummy classes to enforce the subtyping relationship. For example:
+    In C++, JNI introduces a set of dummy classes to enforce the subtyping relationship. 
+    For example:
 
     ```
     class _jobject {}; 
@@ -33,32 +67,41 @@
 
 
 
-## Compiling, linking and name lookup
-
-1.  Since the Java VM is multithreaded, native libraries should also be compiled 
-     and linked with multithread aware native compilers. 
-    For example, the `-mt` flag should be used for C++ code compiled with the 
-     Sun Studio compiler. 
-    For code complied with the GNU `gcc` compiler, the flags `-D_REENTRANT` or 
-     `-D_POSIX_C_SOURCE` should be used. 
-    For more information please refer to the native compiler documentation.
-2.  The system follows a standard, but platform-specific, approach to convert 
-     the library name to a native library name. 
-    For example, a Solaris system converts the name `pkg_Cls` to `libpkg_Cls.so`, 
-     while a Win32 system converts the same `pkg_Cls` name to `pkg_Cls.dll`.
-3.  The programmer can also call the JNI function `RegisterNatives()` to register 
-     the native methods associated with a class. 
-    The `RegisterNatives()` function is particularly useful with statically 
-    linked functions.
-4.  Dynamic linkers resolve entries based on their names. 
+##  Name lookup
+1.  Dynamic linkers resolve entries based on their names. 
     A native method name is concatenated from the following components:
      * the prefix `Java_`
-     * a mangled fully-qualified class name
+     * a mangled fully-qualified class name (see next entry)
      * an underscore (`_`) separator
      * a mangled method name
      * for overloaded native methods, two underscores (`__`) followed by the 
        mangled argument signature
-
+2.  The VM looks first for the short name; that is, the name without the 
+     argument signature. 
+    It then looks for the long name, which is the name with the argument signature. 
+    Programmers need to use the long name only when a native method is overloaded 
+     with another native method. 
+    However, this is not a problem if the native method has the same name as a 
+     nonnative method.
+3.  The Java method:
+   
+    ```
+    long f (int n, String s, int[] arr); 
+    ```
+    has the following type signature:
+    
+    ```
+    (ILjava/lang/String;[I)J 
+    ```
+    And the long native function name `Java_pkg_Cls_f_ILjava_lang_String_2` designates the following function
+    
+    ```
+    package pkg;  
+    class Cls {
+      native double f(int i, String s); 
+      ... 
+    } 
+    ```
 
 
 
@@ -264,17 +307,7 @@
     #define JNI_FALSE  0
     #define JNI_TRUE   1
     ```
-2.  The Java method:
-   
-    ```
-    long f (int n, String s, int[] arr); 
-    ```
-    has the following type signature:
-    
-    ```
-    (ILjava/lang/String;[I)J 
-    ```
-3.  
+2.  
 
 
 
