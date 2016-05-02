@@ -168,7 +168,8 @@
      that one thread does not unpin an array that is also pinned by another thread. 
     Note that the JNI does not need to lock primitive arrays for exclusive access 
      by a native method. 
-    Simultaneously updating a Java array from different threads leads to nondeterministic results.
+    Simultaneously updating a Java array from different threads leads to 
+     nondeterministic results.
 8.  The JNI allows native code to access the fields and to call the methods of 
     Java objects. 
     The JNI identifies methods and fields by their symbolic names and type signatures. 
@@ -212,15 +213,17 @@
      * call a function, `ExceptionOccurred()`, to obtain the exception object 
        that contains a more detailed description of the error condition.
 
-    There are two cases where the programmer needs to check for exceptions without being able to first check an error code:
+    There are two cases where the programmer needs to check for exceptions without 
+     being able to first check an error code:
      * The JNI functions that invoke a Java method return the result of the Java 
        method. 
        The programmer must call `ExceptionOccurred()` to check for possible 
        exceptions that occurred during the execution of the Java method.
      * Some of the JNI array access functions do not return an error code, but 
        may throw an `ArrayIndexOutOfBoundsException` or `ArrayStoreException`.
-
-    In all other cases, a non-error return value guarantees that no exceptions have been thrown.
+       
+    In all other cases, a non-error return value guarantees that no exceptions 
+     have been thrown.
 2.  There are two ways to handle an exception in native code:
      * The native method can choose to return immediately, causing the exception 
        to be thrown in the Java code that initiated the native method call.       
@@ -228,7 +231,7 @@
        and then execute its own exception-handling code.
 
     After an exception has been raised, the native code must first clear the 
-    exception before making other JNI calls. 
+     exception before making other JNI calls. 
     When there is a pending exception, the JNI functions that are safe to call are
 
       ```
