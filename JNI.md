@@ -33,7 +33,7 @@
 
 
 
-## Compiling
+## Compiling, linking and name lookup
 
 1.  Since the Java VM is multithreaded, native libraries should also be compiled 
      and linked with multithread aware native compilers. 
@@ -46,18 +46,11 @@
      the library name to a native library name. 
     For example, a Solaris system converts the name `pkg_Cls` to `libpkg_Cls.so`, 
      while a Win32 system converts the same `pkg_Cls` name to `pkg_Cls.dll`.
-
-
-
-
-
-## Name lookup
-
-1.  The programmer can also call the JNI function `RegisterNatives()` to register 
+3.  The programmer can also call the JNI function `RegisterNatives()` to register 
      the native methods associated with a class. 
     The `RegisterNatives()` function is particularly useful with statically 
     linked functions.
-2.  Dynamic linkers resolve entries based on their names. 
+4.  Dynamic linkers resolve entries based on their names. 
     A native method name is concatenated from the following components:
      * the prefix `Java_`
      * a mangled fully-qualified class name
