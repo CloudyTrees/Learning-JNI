@@ -1,19 +1,9 @@
 # Collection of JNI knowledge
 
 ## Type information
-1.   Method and field IDs are regular C pointer types:
-
-    ```
-    struct _jfieldID;                       // opaque structure
-    typedef struct _jfieldID *jfieldID;     // field IDs
-     
-    struct _jmethodID;                      // opaque structure
-    typedef struct _jmethodID *jmethodID;   // method IDs
-    ```
-
-2.  ![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
-3.  
-4.  In C, all other JNI reference types are defined to be the same as jobject. 
+1. JNI reference types are organized in the hierarchy shown below
+   ![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
+    In C, all other JNI reference types are defined to be the same as jobject. 
     For example:
 
     ```
@@ -29,7 +19,17 @@
     typedef _jobject *jobject; 
     typedef _jclass *jclass;
     ```
-3. 
+2.  Method and field IDs are regular C pointer types:
+
+    ```
+    struct _jfieldID;                       // opaque structure
+    typedef struct _jfieldID *jfieldID;     // field IDs
+     
+    struct _jmethodID;                      // opaque structure
+    typedef struct _jmethodID *jmethodID;   // method IDs
+    ```
+
+
 
 
 
@@ -48,6 +48,9 @@
      while a Win32 system converts the same `pkg_Cls` name to `pkg_Cls.dll`.
 
 
+
+
+
 ## Name lookup
 
 1.  The programmer can also call the JNI function `RegisterNatives()` to register 
@@ -61,7 +64,10 @@
      * an underscore (`_`) separator
      * a mangled method name
      * for overloaded native methods, two underscores (`__`) followed by the 
-      mangled argument signature
+       mangled argument signature
+
+
+
 
 
 ## Local and global references
@@ -140,36 +146,40 @@
        will not be portable.
 
     We adopt a compromise that overcomes both of the above problems.
-
+    
     First, we provide a set of functions to copy primitive array elements between 
     a segment of a Java array and a native memory buffer. 
     Use these functions if a native method needs access to only a small number 
     of elements in a large array.
-
+    
     Second, programmers can use another set of functions to retrieve a pinned-down 
     version of array elements. 
     Keep in mind that these functions may require the Java VM to perform storage 
     allocation and copying. 
-    Whether these functions in fact copy the array depends on the VM implementation, as follows:
-
-    * If the garbage collector supports pinning, and the layout of the array is 
-      the same as expected by the native method, then no copying is needed.
-    * Otherwise, the array is copied to a nonmovable memory block (for example, 
-      in the C heap) and the necessary format conversion is performed. 
-      A pointer to the copy is returned.
-
-    Lastly, the interface provides functions to inform the VM that the native code no longer needs to access the array elements. When you call these functions, the system either unpins the array, or it reconciles the original array with its non-movable copy and frees the copy.
-
+    Whether these functions in fact copy the array depends on the VM implementation, 
+     as follows:
+     * If the garbage collector supports pinning, and the layout of the array is 
+       the same as expected by the native method, then no copying is needed.
+     * Otherwise, the array is copied to a nonmovable memory block (for example, 
+       in the C heap) and the necessary format conversion is performed. 
+       A pointer to the copy is returned.
+       
+    Lastly, the interface provides functions to inform the VM that the native code 
+     no longer needs to access the array elements. 
+    When you call these functions, the system either unpins the array, or it 
+     reconciles the original array with its non-movable copy and frees the copy.
+    
     A JNI implementation must ensure that native methods running in multiple 
-    threads can simultaneously access the same array. 
+     threads can simultaneously access the same array. 
     For example, the JNI may keep an internal counter for each pinned array so 
-    that one thread does not unpin an array that is also pinned by another thread. 
+     that one thread does not unpin an array that is also pinned by another thread. 
     Note that the JNI does not need to lock primitive arrays for exclusive access 
-    by a native method. 
+     by a native method. 
     Simultaneously updating a Java array from different threads leads to nondeterministic results.
 8.  The JNI allows native code to access the fields and to call the methods of 
     Java objects. 
-    The JNI identifies methods and fields by their symbolic names and type signatures. A two-step process factors out the cost of locating the field or method from 
+    The JNI identifies methods and fields by their symbolic names and type signatures. 
+    A two-step process factors out the cost of locating the field or method from 
      its name and signature. 
     For example, to call the method f in class cls, the native code first obtains 
      a method ID, as follows:
@@ -177,7 +187,7 @@
      ```
      jmethodID mid = env->GetMethodID(cls, “f”, “(ILjava/lang/String;)D”);
      ```
-
+     
     The native code can then use the method ID repeatedly without the cost of 
      method lookup, as follows:
 
@@ -190,16 +200,10 @@
     The native code, therefore, must make sure to:
      * keep a live reference to the underlying class, or
      * recompute the method or field ID
+    if it intends to use a method or field ID for an extended period of time.
 
-     if it intends to use a method or field ID for an extended period of time.
-13. 
-14. 
-15. 
-16. 
-17. 
-18. 
-19. 
-20. 
+
+
 
 
 ## Exceptions
@@ -250,9 +254,6 @@
       PushLocalFrame()
       PopLocalFrame()
       ```
-
-
-
 
 
 
@@ -327,8 +328,13 @@ has the following type signature:
 
 ## Tips
 
+
+
+
+
+
 ## References
-1.  
+1.  [Java Native Interface Specification](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html)
 2.  
 3.  
 4.  
