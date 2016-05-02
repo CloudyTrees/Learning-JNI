@@ -211,6 +211,7 @@
        error has occurred, and
      * call a function, `ExceptionOccurred()`, to obtain the exception object 
        that contains a more detailed description of the error condition.
+
     There are two cases where the programmer needs to check for exceptions without being able to first check an error code:
      * The JNI functions that invoke a Java method return the result of the Java 
        method. 
@@ -276,6 +277,13 @@
 
 
 
+## Tips
+
+
+
+
+
+
 ## Tables
 
 Table 2-1 Unicode Character Translation
@@ -325,13 +333,6 @@ Table 3-2 Java VM Type Signatures
 | ( arg-types ) ret-type         | method type           |
 
 -----------------------------------------------------------------
-
-
-
-
-
-
-## Tips
 
 
 
