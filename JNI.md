@@ -1,8 +1,9 @@
 # Collection of JNI knowledge
 
 ## Type information
-1. JNI reference types are organized in the hierarchy shown below
+1.  JNI reference types are organized in the hierarchy shown below
    ![alt text](http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/images/types4.gif)
+    
     In C, all other JNI reference types are defined to be the same as jobject. 
     For example:
 
@@ -44,7 +45,7 @@
     For more information please refer to the native compiler documentation.
 2.  The system follows a standard, but platform-specific, approach to convert 
      the library name to a native library name. 
-   For example, a Solaris system converts the name `pkg_Cls` to `libpkg_Cls.so`, 
+    For example, a Solaris system converts the name `pkg_Cls` to `libpkg_Cls.so`, 
      while a Win32 system converts the same `pkg_Cls` name to `pkg_Cls.dll`.
 
 
@@ -187,7 +188,6 @@
      ```
      jmethodID mid = env->GetMethodID(cls, “f”, “(ILjava/lang/String;)D”);
      ```
-     
     The native code can then use the method ID repeatedly without the cost of 
      method lookup, as follows:
 
@@ -200,6 +200,7 @@
     The native code, therefore, must make sure to:
      * keep a live reference to the underlying class, or
      * recompute the method or field ID
+
     if it intends to use a method or field ID for an extended period of time.
 
 
@@ -218,7 +219,6 @@
        error has occurred, and
      * call a function, `ExceptionOccurred()`, to obtain the exception object 
        that contains a more detailed description of the error condition.
-
     There are two cases where the programmer needs to check for exceptions without being able to first check an error code:
      * The JNI functions that invoke a Java method return the result of the Java 
        method. 
@@ -226,6 +226,7 @@
        exceptions that occurred during the execution of the Java method.
      * Some of the JNI array access functions do not return an error code, but 
        may throw an `ArrayIndexOutOfBoundsException` or `ArrayStoreException`.
+
     In all other cases, a non-error return value guarantees that no exceptions have been thrown.
 2.  There are two ways to handle an exception in native code:
      * The native method can choose to return immediately, causing the exception 
@@ -263,9 +264,10 @@
 
 1.  The following definition is provided for convenience.
 
-    `#define JNI_FALSE  0`
-
-    `#define JNI_TRUE   1`
+    ```
+    #define JNI_FALSE  0
+    #define JNI_TRUE   1
+    ```
 2. 
 
 
