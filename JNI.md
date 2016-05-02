@@ -67,7 +67,7 @@
 
 
 
-##  Name lookup
+##  Name lookup, symbolic names and type signatures
 1.  Dynamic linkers resolve entries based on their names. 
     A native method name is concatenated from the following components:
      * the prefix `Java_`
